@@ -31,7 +31,7 @@ namespace FinalstudyCis300
 
             //Test #6
             Console.WriteLine("********* Begin Test 6 *********");
-            int[] myList = new int[5] { 1,2,3,4,5};
+            int[] myList = new int[5] { 2,1,3,2,5};
             Sort(myList);
             foreach(int num in myList)
             {
