@@ -44,16 +44,81 @@ namespace FinalstudyCis300
             Console.ReadKey();
         }
 
-        //#1
+        //#1 
+        //Given a HuffmanTreeNode and two plain text strings, finish the methods below to calculate whether or
+        //not the encoding of first string (string a) is larger than the encoding of the second string (string b). You may
+        //assume that the tree has at least one node.The recursive BuildTable method should populate the given
+        //dictionary with the encoding of all characters contained in the tree.The Key of the dictionary should be a
+        //character and the Value should be the binary encoding for that character. The GetEncoding method uses the
+        //given dictionary and returns the encoded string of the plain text.The HuffmanTreeNode class can be found on
+        //the last page.You may assume that the given tree contains all of the characters of the given text.
 
+        public string GetEncoding(Dictionary<char, string> table, string plainText)
+        {
+            string temp = plainText;
+            StringBuilder theEncoding = new StringBuilder();
+            for (int i = 0; i < plainText.Length; i++)
+            {
+                string mydictVal;
+                if(table.TryGetValue(plainText[i], out mydictVal))
+                {
+                    theEncoding.Append(mydictVal);
+                }
+                
+            }
+            return (theEncoding.ToString());
+        }
 
-        //#2
-        //(40 pts) The method below takes a linked list of integers. The LinkedListCell class is defined on the last page.
-        //You may assume that list initially refers to the beginning of a linked list containing at least one int. Additionally,
-        //the last cell of the linked list Next property contains a pointer to the first cell of the list, causing the list to loop
-        //on itself.Complete the method below to reverse the linked list.This should work for any linked list of size n > 0.
-        //Your algorithm cannot move the Data property from one cell to another.
-        public void Reverse(LinkedListCell<int> list)
+        /// <summary>
+        /// If string a.Length is less than string b.Length , then return true.
+        /// </summary>
+        /// <param name="tree"></param>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public bool CheckLengths(HuffmanTreeNode tree, string a, string b) //
+        {
+            Dictionary<char, string> table = new Dictionary<char, string>();
+            BuildTable(tree, new StringBuilder(), table);
+
+            if(GetEncoding(table,a).Length < GetEncoding(table, b).Length)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Not returning anything. just add onto the dictionary as you go. 
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="code"></param>
+        /// <param name="table"></param>
+        public void BuildTable(HuffmanTreeNode root, StringBuilder code, Dictionary<char, string> table)
+        {
+            if(root.leftChild != null) //Check if the node has children
+            {
+
+                BuildTable(root.LeftChild, code.Append('0'), table); //maybe create a temporary value for stringBuilder Code to combat globally udating "code" stringBuilder.
+                BuildTable(root.RightChild, code.Append('1'), table);
+                     
+            }
+            else //We're at a character
+            {
+                table.Add(root.Data, code);
+            }
+        }
+
+            //#2
+            //(40 pts) The method below takes a linked list of integers. The LinkedListCell class is defined on the last page.
+            //You may assume that list initially refers to the beginning of a linked list containing at least one int. Additionally,
+            //the last cell of the linked list Next property contains a pointer to the first cell of the list, causing the list to loop
+            //on itself.Complete the method below to reverse the linked list.This should work for any linked list of size n > 0.
+            //Your algorithm cannot move the Data property from one cell to another.
+            public void Reverse(LinkedListCell<int> list)
         {
             List<LinkedListCell<int>> myList = new List<LinkedListCell<int>>();
             LinkedListCell<int> Result = new LinkedListCell<int>();
@@ -75,6 +140,44 @@ namespace FinalstudyCis300
 
         }
 
+
+        //#3 
+        //(35 pts) Complete the recursive method below that returns the number of odd nodes(i.e.the data contained at
+        //the node is odd) divided by the total number of nodes in the tree.This tree is a BinaryTreeNode that contains at
+        //least one node.
+        int FindOddRatio(BinaryTreeNode<int> root)
+        {
+            Tuple<int, int> Ratio = FindOddRatio(root);
+
+
+        }
+
+        Tuple<int, int> FindOddRatioR(BinaryTreeNode<int> root)
+        {
+            Tuple<int, int> Result = new Tuple<int, int>(0, 0);
+            int Odd = 0;
+            int Total = 0;
+
+            if (root.LeftChild != null) //If LeftChild exists traverse it
+            {
+                Result = FindOddRatio(root.LeftChild);
+            }
+            else if (root.RightChild != null) //If RightChild exists traverse it
+            {
+                Result = FindOddRatio(root.RightChild);
+            }
+
+            if (root.Data % 2 == 1) //Check the data
+
+                Odd = Result.Item1 + 1;
+
+
+            Total = Result.Item2 + 1; //Always add one to total
+
+            Result = new Tuple<int, int>(Odd, Total);
+            return Result;
+
+        }
 
 
 
